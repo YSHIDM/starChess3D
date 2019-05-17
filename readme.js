@@ -1,7 +1,16 @@
-let starGame = {
 
-}
 let DB = {
+  Star:{},
+  Player:{},
+  marchMap:{
+    toMap:{
+      fromMap:[
+        offsetMap={}
+      ]
+    }
+  }
+}
+let core = {
   Game: {
     Property: {
       playerNumber: '玩家数',
@@ -426,19 +435,12 @@ let DB = {
     }
   }
 }
-
+let UI = {
+  command:'程序员',
+  table:'普通人',
+  svg_graph:'2D直观',
+  chart_coordinate:'3D可操作',
+  AR_VR:'想多了，兄弟！'
+}
 let 模式 = [['2D', '3D'], ['单人', '双人'], ['正常', '快速'], ['自动', '自定义星球坐标', '自定义开始位置']]
 let rooms = [1, 2, 3, 4]
-
-// socket.id = userId
-
-// room = gameId
-
-let Game = require('./Game');
-let Star = require('./Star');
-let Player = require('./Player');
-let game = new Star()
-for (const key in game) {
-  console.log(key);
-}
-
