@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>socket.io客户端</title>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <textarea name="" id="result" cols="30" rows="10">123</textarea>
+    <input type="text" id="command" value="create game" />
+
+    <button id="send">发送消息到服务器</button>
+    <div>
+      <h3>服务器响应的消息：</h3>
+      <i id="msg"></i>
+    </div>
+
+    <script>
+      var routes = function(command='') {
+        if (command.startsWith('create')) {
+          console.log('create');
+          return 'createGame'
+        } else if (command.startsWith('init')) {
+          console.log('init');
+          return 'singleGame'
+        } else if (command.startsWith('join')) {
+          console.log('join');
+          return 'joinGame'
+        }else if (command.startsWith('detect')) {
+          console.log('detect');
+          return 'detect'
+        }else if (command.startsWith('abut')) {
+          console.log('abut');
+          return 'abut'
+        }
+      };
+      window.onload = () => {
+        var socket = io("ws://localhost:3001");
+        var result = document.querySelector("#result");
+        var send = document.querySelector("#send");
+        var msg = document.querySelector("#msg");
+
+        socket.on("getMsg", data => {
+          console.log("服务端消息：", data);
+          result.value = data;
+        });
+
+        send.onclick = () => {
+          var command = document.querySelector('#command').value;
+          var event = routes(command)
+          socket.emit(event, command);
+        };
+      };
+    </script>
+  </body>
+</html>
