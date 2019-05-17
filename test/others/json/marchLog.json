@@ -1,0 +1,35 @@
+{
+  "uid": 2,
+  "sid": 90,
+  "musterFrom": {
+    "2": [85, 86],
+    "1": [93, 94]
+  },
+  "musterTo": "91",
+  "marchLogs": {
+    "91": [
+      {
+        "army": 500,
+        "time": 1556384738610
+      },
+      {
+        "startMusterTime": 1556384738610,
+        "military": 10,
+        "endTime": 1556384748610,
+        "offset": 0
+      }
+    ],
+    "92": [
+      {
+        "army": 500,
+        "time": 1556384738610
+      },
+      {
+        "startMusterTime": 1556384738610,
+        "military": 10,
+        "endTime": 1556384748610,
+        "offset": 0
+      }
+    ]
+  }
+}
