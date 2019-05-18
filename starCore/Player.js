@@ -1,18 +1,7 @@
 /* 玩家 */
 // const mapping = require('./星距.json')
-
-/*
-星际旅行：10，量子通信20，人工智能30，星际网40，可控聚变50，
-
-戴森球：消耗资源，+1马
-
-黑洞：消耗资源50
-
-虫洞：持续消耗资源50+10/s
-*/
 let travels = [
-  { name: '星际旅行', developed: 100, effect: '开启星际探索[实现]' },
-  { name: '量子科技', developed: 200, effect: '侦察时间减半' },
+  { name: '星际旅行', developed: 200, effect: '开启星际探索[实现]' },
   { name: '人工智能', developed: 300, effect: '取消最大兵力' },
   { name: '星际网络', developed: 400, effect: '全图星球信息' },
   { name: '可控聚变', developed: 500, effect: '开启高级科技[实现]' }
