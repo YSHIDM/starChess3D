@@ -1,6 +1,6 @@
 const UUID = require('uuid');
 const Star = require('./Star');
-const { random, getDistance } = require('./util');
+const { random, getDistance } = require('../util/util');
 /**
  * 游戏
  * id自增
