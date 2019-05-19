@@ -1,6 +1,6 @@
-const UUID = require('uuid');
-const Star = require('./Star');
-const { random, getDistance } = require('../util/util');
+const UUID = require('uuid')
+const Star = require('./Star')
+const { random, getDistance } = require('../util/util')
 /**
  * 游戏
  * id自增
@@ -27,7 +27,7 @@ class Game {
      * 行军日志 playerId,toStarId,fromStar,distance
      * @type {Map<string,Map<string,Map<string,Map<string,number>>>>}
      */
-    this.toMap = new Map()
+    this.marchMap = new Map()
     this.gameTime = 0         // 游戏开始时间
     /**
      * 侦察日志，
@@ -42,14 +42,16 @@ class Game {
   /**
    * 按模式初始化游戏
    * @param {number} mode 游戏模式
+   * @param {number} starsNumber 星球数量
+   * @param {number} spaceSize 星空大小（正方体边）
    */
   initGameByMode(mode, starsNumber, spaceSize) {
     switch (mode) {
       case 0:
         initGame(starsNumber, spaceSize)
-        return;
+        return
       default:
-        return;
+        return
     }
   }
   /**
@@ -69,8 +71,12 @@ class Game {
   // initPlayer() {
   //   // 玩家位置，拥有星球，兵力，资源等
   // }
+  /**
+   * 生成星球位置，默认原点对角顶点
+   * @param {number[]} coordinate 默认原点对角顶点
+   */
   initStar(coordinate = [this.spaceSize, this.spaceSize, this.spaceSize]) {
-    let star = new Star(coordinate);
+    let star = new Star(coordinate)
     this.starsMap.set(star.id, star)
   }
   /**
@@ -82,7 +88,7 @@ class Game {
         random(0, this.spaceSize),
         random(0, this.spaceSize),
         random(0, this.spaceSize)
-      ];
+      ]
       initStar(coordinate)
     }
   }
@@ -114,18 +120,18 @@ class Game {
     if (!star.receiveArmyTime) {
       star.receiveArmyTime = now
     }
-    this.toMap.get(playerId).get(toStar).get(fromStar)
+    this.marchMap.get(playerId).get(toStar).get(fromStar)
       .set('startMusterTime', now)
       .set('military', this.starsMap.get(fromStar).military)
   }
   /**
    * 时间段颗粒化
-   * @param {Map<string|number,number>} marchMap 行军日志
+   * @param {Map<string|number,number>} armyOffset 行军日志
    */
-  _militaryToArmy(marchMap) {
-    let l = 10 - marchMap.get('startMusterTime');//test
+  _militaryToArmy(armyOffset) {
+    let l = 10 - armyOffset.get('startMusterTime')//test
     for (let i = 0; i < l; i++) {
-      marchMap.set(marchMap.get('startMusterTime') + i, marchMap.get('military'))
+      armyOffset.set(armyOffset.get('startMusterTime') + i, armyOffset.get('military'))
     }
   }
   /**
@@ -135,33 +141,33 @@ class Game {
    * @param {string} toStar 目标星球
    */
   endMuster(playerId, fromStar, toStar) {// TODO 数据是否修改成功
-    let marchMap = this.toMap.get(playerId).get(toStar).get(fromStar)
-    _militaryToArmy(marchMap)
-    marchMap.delete('startMusterTime')
-    marchMap.delete('military')
+    let armyOffset = this.marchMap.get(playerId).get(toStar).get(fromStar)
+    _militaryToArmy(armyOffset)
+    armyOffset.delete('startMusterTime')
+    armyOffset.delete('military')
   }
   /**
    * 军队运动结算
-   * @param {Map<number|string, number>} marchMap 
+   * @param {Map<number|string, number>} armyOffset 
    * @param {number|number[]} timeS 时间段开始 或时间数组
    * @param {number} timeE 时间段结束
    * @returns {[number,number[]]}
    */
-  _armyOffset(marchMap, timeS, timeE = 0) {
+  _marchOffset(armyOffset, timeS, timeE = 0) {
     let countArmy = 0
     let timeArray = []
     if (typeof timeS === 'object') {//array 形式
       timeS.forEach(v => {
-        let _army = marchMap.get(v) | 0
+        let _army = armyOffset.get(v) | 0
         countArmy += _army
-        marchMap.delete(v)
+        armyOffset.delete(v)
         timeArray.push(v)
       })
     } else {
-      marchMap.forEach((v, k) => {
+      armyOffset.forEach((v, k) => {
         if (k >= timeS && k <= timeE) {
           countArmy += v | 0
-          marchMap.delete(k)
+          armyOffset.delete(k)
           timeArray.push(k)
         }
       })
@@ -176,12 +182,12 @@ class Game {
    * @param {number} timeE 当前（toStar）星球兵力结算时间，外部调用是为当前时间点
    */
   receiveSettle(playerId, toStar, timeS, timeE = 0) {
-    if (!this.toMap.get(playerId).has(toStar)) {
+    if (!this.marchMap.get(playerId).has(toStar)) {
       return 0
     }
     let toCount = 0
-    let fromMap = this.toMap.get(playerId).get(toStar)
-    fromMap.forEach((marchMap, fromStar) => {
+    let fromMap = this.marchMap.get(playerId).get(toStar)
+    fromMap.forEach((armyOffset, fromStar) => {
       let distance = this.getDistanceByStar(fromStar, toStar)
 
       let _timeS = 0
@@ -195,14 +201,14 @@ class Game {
         _timeE = timeE - distance
       }
 
-      let [army, timeArray] = _armyOffset(marchMap, _timeS, _timeE)
+      let [army, timeArray] = this._marchOffset(armyOffset, _timeS, _timeE)
 
       if (army > 0) {
         toCount += army
         toCount += this.receiveSettle(playerId, fromStar, timeArray)
       }
     })
-    return toCount;
+    return toCount
   }
   /**
    * 调动军队时间戳
@@ -212,7 +218,7 @@ class Game {
    * @param {number} army 军队数量
    */
   moveArmy(playerId, fromStar, toStar, army) {
-    this.toMap.get(playerId).get(toStar).get(fromStar).set(this.secondUp(), army);
+    this.marchMap.get(playerId).get(toStar).get(fromStar).set(this.secondUp(), army)
   }
 
 
@@ -229,7 +235,7 @@ class Game {
     }
     let now = this.secondUp()
     let army = star.militarySettle(now)// 生产兵力
-    army += this.receiveSettle(playerId, toStar, star.receiveArmyTime, now);// 接收兵力
+    army += this.receiveSettle(playerId, toStar, star.receiveArmyTime, now)// 接收兵力
     star.startMilitaryTime = now // 军队结算时间
     star.armies[playerId] += army //TODO 是不是修改了
   }
@@ -244,11 +250,11 @@ class Game {
     this.armySettle(playerId, toStar)
     let star = this.starsMap.get(toStar)
     if (army <= 0 || army > star.armies[playerId]) {
-      army = this.army;
+      army = star.army
     }
     star.armies[playerId] -= army
     //调动军队时间戳
-    this.moveArmy(fromStar, toStar, this.secondUp(), army);
+    this.moveArmy(fromStar, toStar, this.secondUp(), army)
   }
   /**
    * 向目标星球集结军队//存入星图
@@ -283,7 +289,7 @@ class Game {
   }
 
   /**
-   * 
+   * 获取临近星球
    * @param {string} starId 
    * @param {number} steps 
    * @returns {string[]}
@@ -340,6 +346,8 @@ class Game {
   occupy(starId) { }
   /**
    * 侦察星球
+   * 客户端第一次访问进行记录并返回消耗时间，客户端setTimeout，
+   * 第二次访问进行比较验证
    * @param {string} playerId 玩家id
    * @param {string} toStar 星球名称
    * {{time:number,starId1:string,starId2:string,distance:number}}
@@ -363,17 +371,21 @@ class Game {
     return { uuid, distance }
   }
   /**
-   * 作弊比较
+   * 坐标比较
    * @param {number[]} coordinate1 第一个坐标
    * @param {number[]} coordinate2 第二个坐标
    */
   _checkCoordinate(coordinate1, coordinate2) {
     return coordinate1.toString() !== coordinate2.toString()
   }
+  /**
+   * 进行比较验证，返回侦察结果
+   * @param {string} uuid 侦察操作uuid
+   */
   detectCheck(uuid) {
     let detectLog = this.detectMap.get(uuid)
     let currentCoordinate = this.starsMap.get(detectLog.toStar).coordinate
-    if (_checkCoordinate(currentCoordinate, detectLog.toStarCoordinate)) {
+    if (this._checkCoordinate(currentCoordinate, detectLog.toStarCoordinate)) {
       return { exception: '星球不见了' }
     } else if (detectLog.distance > (this.secondUp - detectLog.time)) {
       return { exception: '你是个聪明人' }
@@ -429,8 +441,8 @@ class Game {
    */
   static getGame(id) {
     //db(id)
-    let game;
-    return game;
+    let game
+    return game
   }
   /**
    * 保存游戏信息
@@ -451,6 +463,6 @@ class Game {
   }
 }
 // let g = new Game()
-// g._initStars();
+// g._initStars()
 // console.log(g.starsMap)
 module.exports = Game
