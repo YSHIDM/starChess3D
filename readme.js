@@ -1,4 +1,5 @@
 let 游戏简介 = {
+  自言自语: '迁移到 midway.js 试试',
   原因: {
     红警与星际: `小学时听同学吹牛，红警如何如何，光棱塔、间谍，
       脑补了好多类似间谍到一个满是光棱塔监视的城市盗取情报的画面
@@ -49,7 +50,7 @@ let 游戏简介 = {
       优化：star分别记录自己的兵力接收日志，game对其进行广度优先计算。（可以彼此测试）
     `,
     最短路径: `并行于集结的兵力输送方案，既兵力到达目标星球之前不受操作影响，
-      用于长距离、跨星球输送兵力，类似于《真菌世界》操作方式  
+      用于长距离、跨星球输送兵力，类似于《真菌世界》操作方式
     `,
     兵力撤退: `用于集结过程中，目标星球被占领后兵力撤退，
       其实就是倒转运动中的军队的时间戳，
@@ -90,7 +91,7 @@ let 游戏简介 = {
     }
   }
 }
-// let 
+// let
 let DB = {
   Star: '星球',
   Player: '玩家',
@@ -206,7 +207,7 @@ let core = {
      * 军队运动结算
      * 获取输送到目标星球的兵力，同时返回向目标星球输送兵力的 时间数组
      * 时间数组 用来筛选兵力是否输送到
-     * @param {Map<number|string, number>} armyOffset 
+     * @param {Map<number|string, number>} armyOffset
      * @param {number|number[]} timeS 时间段开始 或时间数组
      * @param {number} timeE 时间段结束
      * @returns {[number,number[]]}
@@ -309,8 +310,8 @@ let core = {
     },
     /**
      * 获取临近星球
-     * @param {string} starId 
-     * @param {number} steps 
+     * @param {string} starId
+     * @param {number} steps
      * @returns {string[]}
      */
     getAbutStar(starId, steps) { },
