@@ -23,8 +23,8 @@ class Star {
     // this.startMusterTime = 0;      // 兵力输出时间：字典调整，作废
     this.receiveArmyTime = 0              //兵力接收时间，既是fromStar发兵时间
     this.military = 0;          // 军队生产力
-    /** 
-     * 
+    /**
+     *
      * 军队结算时间/兵力生产时间：时间差*生产力=生产军队
      * 1.停止输出军队，2.军队结算
      */
@@ -70,7 +70,7 @@ class Star {
       let defenceLevelInfo = Star.defenceLevelInfos[this.defenceLevel];
       if (!defenceLevelInfo) {
         return 'max';
-      } else if (musterTo) {
+      } else if (this.musterTo) {
         return 'musterTo';
       } else {
         armySettle();
@@ -91,7 +91,7 @@ class Star {
   }
   /**
    * 资源及军队生产力升级
-   * @param {*} playerId 
+   * @param {*} playerId
    */
   upgradeProduction(playerId, pay) {
     if (playerId === this.belong) {
@@ -123,66 +123,66 @@ class Star {
     return (now - this.startMilitaryTime + 1) * this.military;
   }
 
-  // /**
-  //  * 输出兵力//存入星图
-  //  * @param {string} toStar 兵力数量,num 大于总兵力或小于零，则赋值为总兵力
-  //  * @param {number} num 兵力数量,num 大于总兵力或小于零，则赋值为总兵力
-  //  */
-  // sendArmy(playerId,toStar, num = 0) {
-  //   this.armySettle();
-  //   if (num < 0 || num > this.armies[playerId]) {
-  //     num = this.army;
-  //   }
-  //   this.army -= num;
-  //   //调动军队时间戳
-  //   starsMapUtil.moveArmy(this.id, toStar, num, now);
-  // }
-  // /**
-  //  * 向目标星球集结军队//存入星图
-  //  * @param {string} toStar 目标星球
-  //  */
-  // musterArmy(toStar) {
-  //   this.startMusterTime = new Date().getTime();
-  //   this.musterTo = toStar;
-  //   this.sendArmy(toStar);
-  //   starsMapUtil.startMuster(this.id,toStar,this.military);
-  // }
-  // /**
-  //  * 到达指定目标的军队数量
-  //  * @param {string} toStar 目标星球
-  //  */
-  // toArmySettle(toStar) {
-  //   starsMapUtil.massByTime(this.id, toStar);
-  // }
-  // static saveStar(star) {
-  //   //内存/DB
-  // }
-  // /**
-  //  *
-  //  *
-  //  * @static
-  //  * @param {*} starId
-  //  * @returns {Star}
-  //  * @memberof Star
-  //  */
-  // static getStar(starId) {
-  //   let star;
-  //   return star;
-  // }
-  // static starsChange() {
-  // }
-  // /**
-  //  * 虫洞-传送军队
-  //  * @param {string} starId 星球名称
-  //  * @param {number} armyNum 军队数量
-  //  * @param {number[]} transferCoordinate 目标坐标
-  //  */
-  // static transferArmy(starId = '', transferCoordinate = [0, 0, 0], armyNum = 0) {
-  //   let allArmy = Star.getStar(starId).armySettle();
-  //   if (!army || army > allArmy) {
-  //     army = allArmy;
-  //   }
-  // }
+  /**
+   * 输出兵力//存入星图
+   * @param {string} toStar 兵力数量,num 大于总兵力或小于零，则赋值为总兵力
+   * @param {number} num 兵力数量,num 大于总兵力或小于零，则赋值为总兵力
+   */
+  sendArmy(playerId,toStar, num = 0) {
+    this.armySettle();
+    if (num < 0 || num > this.armies[playerId]) {
+      num = this.army;
+    }
+    this.army -= num;
+    //调动军队时间戳
+    starsMapUtil.moveArmy(this.id, toStar, num, now);
+  }
+  /**
+   * 向目标星球集结军队//存入星图
+   * @param {string} toStar 目标星球
+   */
+  musterArmy(toStar) {
+    this.startMusterTime = new Date().getTime();
+    this.musterTo = toStar;
+    this.sendArmy(toStar);
+    starsMapUtil.startMuster(this.id,toStar,this.military);
+  }
+  /**
+   * 到达指定目标的军队数量
+   * @param {string} toStar 目标星球
+   */
+  toArmySettle(toStar) {
+    starsMapUtil.massByTime(this.id, toStar);
+  }
+  static saveStar(star) {
+    //内存/DB
+  }
+  /**
+   *
+   *
+   * @static
+   * @param {*} starId
+   * @returns {Star}
+   * @memberof Star
+   */
+  static getStar(starId) {
+    let star;
+    return star;
+  }
+  static starsChange() {
+  }
+  /**
+   * 虫洞-传送军队
+   * @param {string} starId 星球名称
+   * @param {number} armyNum 军队数量
+   * @param {number[]} transferCoordinate 目标坐标
+   */
+  static transferArmy(starId = '', transferCoordinate = [0, 0, 0], armyNum = 0) {
+    let allArmy = Star.getStar(starId).armySettle();
+    if (!army || army > allArmy) {
+      army = allArmy;
+    }
+  }
 
 }
 
@@ -197,5 +197,5 @@ let getStar = (starName) => {
 let getStarByDB = (starName) => {
   return star;
 }
-
+getStar()
 module.exports = Star

@@ -19,8 +19,8 @@ let DB = {
     initGameByMode: {//wait
       params: {
         param: ``,
-        param: ``,
-        param: ``,
+        param1: ``,
+        param2: ``,
       },
       comment: ``,
     },
@@ -262,8 +262,8 @@ let DB = {
     initGameByMode: {//wait
       params: {
         param: ``,
-        param: ``,
-        param: ``,
+        param1: ``,
+        param2: ``,
       },
       comment: ``,
     },
@@ -304,16 +304,8 @@ let DB = {
     initGameByMode: {//wait
       params: {
         param: ``,
-        param: ``,
-        param: ``,
-      },
-      comment: ``,
-    },
-    initGameByMode: {//wait
-      params: {
-        param: ``,
-        param: ``,
-        param: ``,
+        param1: ``,
+        param2: ``,
       },
       comment: ``,
     },
@@ -400,7 +392,7 @@ let DB = {
       comment: 'starId1向starId2集结兵力',
       regExp: /muster (?<starId1>\d+) (?<starId2>\d+)/
     },
-    'transfer army starId1 starId2 army1？': {
+    'transfer army starId1 starId2 army1?': {
       comment: '将兵力（缺省为全部）从星球1传送至星球2',
       regExp: /transfer army (?<starId1>\d+) (?<starId2>\d+) (?<army>\d+)/
     },
@@ -441,4 +433,3 @@ let game = new Star()
 for (const key in game) {
   console.log(key);
 }
-

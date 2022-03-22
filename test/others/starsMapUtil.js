@@ -29,15 +29,15 @@ let visualStarsMap2 = (starsNumber, starsCoordinate) => {
   return starsMap
 }
 
-// let doIt = async () => {
-//   let starsMap = starsMapUtil.initStarsMap();
-//   await require('fs').promises.writeFile(__dirname + '/星图2.json', JSON.stringify(starsMap));
-//   // let adjacencyForStars = starsMapUtil.getStarsAdjacency(require('./星图.json'), 50);
-//   // await require('fs').promises.writeFile(__dirname + '/adjacencyForStars.json', JSON.stringify(adjacencyForStars));
-// }
+let doIt = async () => {
+  let starsMap = starsMapUtil.initStarsMap();
+  await require('fs').promises.writeFile(__dirname + '/星图2.json', JSON.stringify(starsMap));
+  // let adjacencyForStars = starsMapUtil.getStarsAdjacency(require('./星图.json'), 50);
+  // await require('fs').promises.writeFile(__dirname + '/adjacencyForStars.json', JSON.stringify(adjacencyForStars));
+}
 
-// doIt()
-/*
+doIt()
+
 function t1() {
 
   marchMap.set(0, 500)//时间/兵力
@@ -85,5 +85,4 @@ console.log(toMap);
 let a = massByTime(3, 0, 10)
 console.log(a);
 console.log(toMap);
-*/
-// require('fs').promises.writeFile(__dirname + '/logs.json', JSON.stringify(starsMap));
+require('fs').promises.writeFile(__dirname + '/logs.json', JSON.stringify(starsMap));
