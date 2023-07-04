@@ -7,13 +7,13 @@
   },
   "dependencies": {
     "koa": "^2.14.2",
-    "koa-bodyparser": "^4.4.0",
+    "koa-bodyparser": "^4.4.1",
     "koa-jwt": "^4.0.4",
     "koa-logger": "^3.2.1",
     "koa-static": "^5.0.0",
-    "mongoose": "^7.3.0",
+    "mongoose": "^7.3.1",
     "nodemon": "^2.0.22",
-    "socket.io": "^4.6.2",
+    "socket.io": "^4.7.1",
     "uuid": "^9.0.0"
   }
 }
